@@ -4,11 +4,16 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import androidx.annotation.RequiresApi
 import com.a.crud_web_api_kotlin.ConsumoAPI.CRUD
+import com.a.crud_web_api_kotlin.ConsumoAPI.OkHttpListagem.ConsumoLista
 import com.a.crud_web_api_kotlin.ViewModel.ViewModel
+import com.a.crud_web_api_kotlin.adapter.adapter
 import com.a.crud_web_api_kotlin.model.model
 import kotlinx.android.synthetic.main.insert_actiondialog.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.util.ArrayList
+import java.util.Observer
 
 class telasDialog(private var view: View,
                   private var context: Context,
@@ -23,6 +29,7 @@ class telasDialog(private var view: View,
 
     var userViewModel = UserViewModel
     //--------------------------------------------------------------------------
+    @RequiresApi(Build.VERSION_CODES.N)
     fun criaDELETE_ActionDialog(ID:Int){
 
         var recebeID = ID
@@ -39,6 +46,7 @@ class telasDialog(private var view: View,
 
                 val EnviaDados = model(id_usuario = recebeID)
                 userViewModel.deleteUser(EnviaDados)
+
             }).
         setNegativeButton("Não",null).
         show()

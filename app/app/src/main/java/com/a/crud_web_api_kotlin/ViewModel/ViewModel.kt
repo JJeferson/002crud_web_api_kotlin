@@ -1,12 +1,13 @@
 package com.a.crud_web_api_kotlin.ViewModel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewModelScope
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.*
+import com.a.crud_web_api_kotlin.ConsumoAPI.OkHttpListagem.ConsumoLista
 import com.a.crud_web_api_kotlin.Repository.Repository
 import com.a.crud_web_api_kotlin.model.model
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,6 +21,19 @@ class ViewModel(application: Application): AndroidViewModel(application), Lifecy
         repository = Repository()
     }//fim do init
 
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+     fun ListAll():MutableLiveData<ArrayList<model>> {
+        var listaUsuarios = ArrayList<model>()
+        repository.ListAll().observeForever{
+            listaUsuarios.addAll(it)
+
+        }
+        var LiveData = MutableLiveData<ArrayList<model>>()
+        LiveData.postValue(listaUsuarios)
+        return LiveData
+    }
 
 
     fun addUser(model:model){
@@ -39,7 +53,6 @@ class ViewModel(application: Application): AndroidViewModel(application), Lifecy
             repository.deleteUser(model)
         }
     }
-
 
     override fun getLifecycle(): Lifecycle {
         TODO("Not yet implemented")
