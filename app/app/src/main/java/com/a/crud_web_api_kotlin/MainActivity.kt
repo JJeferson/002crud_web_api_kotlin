@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity()   {
 
     private lateinit var UserViewModel: ViewModel
     private var listaUsuarios = ArrayList<model>()
+    //lateinit var listaUsuarios : ArrayList<model>
     lateinit var adapter:adapter
 
 
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity()   {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //---------------------------
-
+        setupRecyclerview()
         CarregaLista()
 
         Atualiza.setOnClickListener { view ->
@@ -55,8 +56,69 @@ class MainActivity : AppCompatActivity()   {
 
       }//fim do oncreate
 
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setupRecyclerview(){
+        teste.setText("")
+        val view = window.decorView
+        UserViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+
+        adapter = adapter(listaUsuarios,view, this,UserViewModel)
+        recyclerViewID.setAdapter(adapter)
+        recyclerViewID.layoutManager = LinearLayoutManager (this)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun CarregaLista(){
+        val view = window.decorView
+        UserViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+
+        UserViewModel.ListAll().observe( this,Observer<ArrayList<model>> {it:ArrayList<model> ->
+            listaUsuarios.addAll(it)
+            adapter.addList(listaUsuarios)
+
+            })
+
+        /*
+        UserViewModel.ListAll().observeForever({
+            listaUsuarios.addAll(it)
+            adapter.addList(listaUsuarios)
+        })
+        */
+    }
+
+    /*
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun CarregaLista(){
+        teste.setText("")
+        val view = window.decorView
+        UserViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        UserViewModel.ListAll().observeForever({
+            listaUsuarios.addAll(it)
+            updateList(listaUsuarios)
+        })
+    }
+    private fun setupRecyclerview(){
+        val view = window.decorView
+        UserViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+
+        adapter = adapter(listaUsuarios,view, this,UserViewModel)
+        recyclerViewID.setAdapter(adapter)
+        recyclerViewID.layoutManager = LinearLayoutManager (this)
+    }
+    private fun updateList(lista: ArrayList<model>) {
+                adapter.addList(lista)
+    }
+    */
+
+
+
+      /*
       @RequiresApi(Build.VERSION_CODES.N)
        fun CarregaLista(){
+          var listaUsuarios = ArrayList<model>()
+         //listaUsuarios = ArrayList()
+
           teste.setText("")
           val view = window.decorView
           UserViewModel = ViewModelProvider(this).get(ViewModel::class.java)
@@ -71,9 +133,10 @@ class MainActivity : AppCompatActivity()   {
           })
 
       }
-
+       */
 
 }// fim da classe
+
 
 
 

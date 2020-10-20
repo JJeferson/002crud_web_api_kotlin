@@ -1,9 +1,11 @@
 package com.a.crud_web_api_kotlin.adapter
 
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.a.crud_web_api_kotlin.R
@@ -11,6 +13,7 @@ import com.a.crud_web_api_kotlin.ViewModel.ViewModel
 import com.a.crud_web_api_kotlin.model.model
 import com.a.crud_web_api_kotlin.telasDialog
 import kotlinx.android.synthetic.main.layout_lista_recyclerview.view.*
+
 
 class adapter(
     var listaUsuarios: ArrayList<model> = ArrayList(),
@@ -20,6 +23,8 @@ class adapter(
 
     var userViewModel = UserViewModel
     var recebeLista = listaUsuarios
+
+
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -32,12 +37,19 @@ class adapter(
 
     }
 
+    fun addList(lista: ArrayList<model>){
+
+        recebeLista = lista
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         //return userList.size
         return recebeLista.size
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val currentItem = recebeLista[position]
@@ -74,3 +86,4 @@ class adapter(
 
 
 }
+
