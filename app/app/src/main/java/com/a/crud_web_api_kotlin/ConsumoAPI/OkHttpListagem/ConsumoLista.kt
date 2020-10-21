@@ -1,7 +1,9 @@
 package com.a.crud_web_api_kotlin.ConsumoAPI.OkHttpListagem
 
+import android.content.Context
 import android.os.Build
 import android.os.StrictMode
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,16 +13,17 @@ import org.json.JSONArray
 import org.json.JSONException
 import java.io.IOException
 
-class ConsumoLista  {
+class ConsumoLista()  {
+
 
     @Throws(JSONException::class)
     @RequiresApi(Build.VERSION_CODES.N)
-
     fun Lista_OkHttp(): MutableLiveData<ArrayList<model>> {
         //view: View, adapter: adapter, context: Context
         var LiveData = MutableLiveData<ArrayList<model>>()
+
         var listaUsuarios = ArrayList<model>()
-       listaUsuarios.clear()
+        listaUsuarios.clear()
        //LiveData.postValue(listaUsuarios)
 
 
@@ -52,6 +55,8 @@ class ConsumoLista  {
 
                 try {
                     var data = response.body()?.string()
+
+
                     var jsonArray = JSONArray(data)
                     var contador: Int = 0
                     var tamanhoLista = jsonArray.length()
@@ -70,7 +75,7 @@ class ConsumoLista  {
                         var Model = model(recebeID_usuario, recebeNome, recebeEmail)
 
                         listaUsuarios.add(Model)
-
+                        LiveData.postValue(listaUsuarios)
                     }
 
                     //-----------------------
@@ -83,7 +88,7 @@ class ConsumoLista  {
 
 
         })
-     LiveData.postValue(listaUsuarios)
      return LiveData
     }
+
 }

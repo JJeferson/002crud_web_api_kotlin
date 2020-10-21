@@ -21,21 +21,6 @@ class ViewModel(application: Application): AndroidViewModel(application), Lifecy
         repository = Repository()
     }//fim do init
 
-
-
-    @RequiresApi(Build.VERSION_CODES.N)
-     fun ListAll():MutableLiveData<ArrayList<model>> {
-        var listaUsuarios = ArrayList<model>()
-        repository.ListAll().observeForever{
-            listaUsuarios.addAll(it)
-
-        }
-        var LiveData = MutableLiveData<ArrayList<model>>()
-        LiveData.postValue(listaUsuarios)
-        return LiveData
-    }
-
-
     fun addUser(model:model){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addUser(model)

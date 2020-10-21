@@ -13,7 +13,9 @@ router.get('/',(req, res, next) => {
     //---------------------------------
     //Segurança do metodo da rota 
     //metodo get autentica somente via header
-    if (req.headers.chave_unica===chave_unica){
+   // if (req.headers.chave_unica===chave_unica){
+   //removi a autenticação via header porque tava bugando no metodo get.
+   //comportamento mt estranho as vezes respondia as vezes não.    
 
      mysql.getConnection((error,conn) =>{
       if (error) {return res.status(500).send({error:error})}
@@ -32,13 +34,13 @@ router.get('/',(req, res, next) => {
        // o release precisa estar logo após a execução da 
        })
      
-  }else{
+  //}else{
           
-    return res.status(500).send({
-      mensagem:'Erro ao acessar a rota, Chave unica invalida',
-      });
+  //  return res.status(500).send({
+ //     mensagem:'Erro ao acessar a rota, Chave unica invalida',
+ //     });
 
-  }
+ // }
   }
   );
 //----------------------------------------------------------------------------------------------------
